@@ -2,7 +2,6 @@
     "name": "tinno/filament-exception-handler",
     "description": "Plug and play exception handler for Filament using bezhansalleh/filament-exceptions",
     "keywords": [
-        "Tinno",
         "laravel",
         "filament-exception-handler",
         "filament",
