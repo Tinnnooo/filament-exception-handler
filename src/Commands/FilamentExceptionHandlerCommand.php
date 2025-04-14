@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Tinno\FilamentExceptionHandler\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class FilamentExceptionHandlerCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'filament-exception-handler';
 
     public $description = 'My command';
 
