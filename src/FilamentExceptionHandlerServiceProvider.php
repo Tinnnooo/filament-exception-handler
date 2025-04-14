@@ -2,18 +2,20 @@
 
 namespace Tinno\FilamentExceptionHandler;
 
+use BezhanSalleh\FilamentExceptions\Facades\FilamentExceptions;
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
 use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Filesystem\Filesystem;
 use Livewire\Features\SupportTesting\Testable;
-use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Tinno\FilamentExceptionHandler\Commands\FilamentExceptionHandlerCommand;
+use Throwable;
+use Tinno\FilamentExceptionHandler\Commands\HandleInstallCommand;
 use Tinno\FilamentExceptionHandler\Testing\TestsFilamentExceptionHandler;
 
 class FilamentExceptionHandlerServiceProvider extends PackageServiceProvider
@@ -30,24 +32,17 @@ class FilamentExceptionHandlerServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package->name(static::$name)
-            ->hasCommands($this->getCommands())
-            ->hasInstallCommand(function (InstallCommand $command) {
-                $command
-                    ->publishConfigFile()
-                    ->publishMigrations()
-                    ->askToRunMigrations()
-                    ->askToStarRepoOnGitHub('tinno/filament-exception-handler');
-            });
+            ->hasCommands($this->getCommands());
 
-        $configFileName = $package->shortName();
+        // $configFileName = $package->shortName();
 
-        if (file_exists($package->basePath("/../config/{$configFileName}.php"))) {
-            $package->hasConfigFile();
-        }
+        // if (file_exists($package->basePath("/../config/{$configFileName}.php"))) {
+        //     $package->hasConfigFile();
+        // }
 
-        if (file_exists($package->basePath('/../database/migrations'))) {
-            $package->hasMigrations($this->getMigrations());
-        }
+        // if (file_exists($package->basePath('/../database/migrations'))) {
+        //     $package->hasMigrations($this->getMigrations());
+        // }
 
         if (file_exists($package->basePath('/../resources/lang'))) {
             $package->hasTranslations();
@@ -63,30 +58,34 @@ class FilamentExceptionHandlerServiceProvider extends PackageServiceProvider
     public function packageBooted(): void
     {
         // Asset Registration
-        FilamentAsset::register(
-            $this->getAssets(),
-            $this->getAssetPackageName()
-        );
+        // FilamentAsset::register(
+        //     $this->getAssets(),
+        //     $this->getAssetPackageName()
+        // );
 
-        FilamentAsset::registerScriptData(
-            $this->getScriptData(),
-            $this->getAssetPackageName()
-        );
+        // FilamentAsset::registerScriptData(
+        //     $this->getScriptData(),
+        //     $this->getAssetPackageName()
+        // );
 
         // Icon Registration
         FilamentIcon::register($this->getIcons());
 
         // Handle Stubs
-        if (app()->runningInConsole()) {
-            foreach (app(Filesystem::class)->files(__DIR__ . '/../stubs/') as $file) {
-                $this->publishes([
-                    $file->getRealPath() => base_path("stubs/filament-exception-handler/{$file->getFilename()}"),
-                ], 'filament-exception-handler-stubs');
-            }
-        }
+        // if (app()->runningInConsole()) {
+        //     foreach (app(Filesystem::class)->files(__DIR__ . '/../stubs/') as $file) {
+        //         $this->publishes([
+        //             $file->getRealPath() => base_path("stubs/filament-exception-handler/{$file->getFilename()}"),
+        //         ], 'filament-exception-handler-stubs');
+        //     }
+        // }
 
         // Testing
-        Testable::mixin(new TestsFilamentExceptionHandler);
+        // Testable::mixin(new TestsFilamentExceptionHandler);
+
+        app(ExceptionHandler::class)->reportable(function (Throwable $e) {
+            FilamentExceptions::report($e);
+        });
     }
 
     protected function getAssetPackageName(): ?string
@@ -101,8 +100,8 @@ class FilamentExceptionHandlerServiceProvider extends PackageServiceProvider
     {
         return [
             // AlpineComponent::make('filament-exception-handler', __DIR__ . '/../resources/dist/components/filament-exception-handler.js'),
-            Css::make('filament-exception-handler-styles', __DIR__ . '/../resources/dist/filament-exception-handler.css'),
-            Js::make('filament-exception-handler-scripts', __DIR__ . '/../resources/dist/filament-exception-handler.js'),
+            // Css::make('filament-exception-handler-styles', __DIR__ . '/../resources/dist/filament-exception-handler.css'),
+            // Js::make('filament-exception-handler-scripts', __DIR__ . '/../resources/dist/filament-exception-handler.js'),
         ];
     }
 
@@ -112,7 +111,7 @@ class FilamentExceptionHandlerServiceProvider extends PackageServiceProvider
     protected function getCommands(): array
     {
         return [
-            FilamentExceptionHandlerCommand::class,
+            HandleInstallCommand::class,
         ];
     }
 

@@ -4,6 +4,7 @@ namespace Tinno\FilamentExceptionHandler;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Tinno\FilamentExceptionHandler\Resources\FilamentExceptionHandlerResource;
 
 class FilamentExceptionHandlerPlugin implements Plugin
 {
@@ -14,7 +15,9 @@ class FilamentExceptionHandlerPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-        //
+        $panel->resources([
+            FilamentExceptionHandlerResource::class,
+        ]);
     }
 
     public function boot(Panel $panel): void
