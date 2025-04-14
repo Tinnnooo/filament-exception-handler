@@ -14,6 +14,6 @@ class ManageExceptions extends ManageRecords
 
     protected function paginateTableQuery(Builder $query): Paginator | CursorPaginator
     {
-        return $query->fastPaginate(($this->getTableRecordsPerPage() === 'all') ? $query->count() : $this->getTableRecordsPerPage());
+        return $query->fastPaginate(($this->getTableRecordsPerPage() === 'all') ? $query->count() : $this->getTableRecordsPerPage()); // @phpstan-ignore-line
     }
 }
