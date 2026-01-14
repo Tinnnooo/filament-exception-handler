@@ -2,6 +2,10 @@
 
 All notable changes to `filament-exception-handler` will be documented in this file.
 
+## 1.0.3 - 2026-01-14
+
+### deprecated
+
 ## 1.0.0 - 202X-XX-XX
 
 - initial release
