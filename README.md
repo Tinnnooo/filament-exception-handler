@@ -1,3 +1,11 @@
+> ⚠️ **Archived / No longer maintained**
+>
+> This repository was created as a temporary solution while waiting for the main package to support **Filament v4**.
+> Now that Filament v4 is supported upstream, this fork/package is **no longer needed** and will not receive updates.
+>
+> ✅ Please migrate to the official/main package instead.
+
+
 # Package that handle laravel expection.
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/tinno/filament-exception-handler.svg?style=flat-square)](https://packagist.org/packages/tinno/filament-exception-handler)
