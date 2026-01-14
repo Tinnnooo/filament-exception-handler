@@ -22,7 +22,7 @@ This is where your description should go. Limit it to a paragraph or two. Consid
 You can install the package via composer:
 
 ```bash
-composer require tinno/filament-exception-handler
+composer require noin/filament-exception-handler
 ```
 
 You can publish and run the migrations with:
